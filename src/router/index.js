@@ -3,14 +3,15 @@ import express from "express";
 import { register, login } from "../controllers/auth.controller.js";
 
 const router = express.Router();
-const Audio = require('./audio/audio.route');
+import audio from './audio/audio.route.js';
 
 
-router.use('/audio', Audio);
 
 router.post("/register", register);
 
 router.post("/login", login);
+
+router.use('/audio', audio);
 
 export default router;
 

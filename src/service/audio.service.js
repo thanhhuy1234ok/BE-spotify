@@ -1,10 +1,9 @@
-const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
-const ffmpeg = require('fluent-ffmpeg');
-const Track = require('../models/Track'); // Assuming you have a Track model for your database
-
+import ffmpegInstaller  from '@ffmpeg-installer/ffmpeg';
+import ffmpeg from 'fluent-ffmpeg';
+import Track from '../models/Track.js';
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
-const fs = require('fs');
-const mkdirp = require('mkdirp');
+import fs  from 'fs';
+import mkdirp  from 'mkdirp';
 
 function convertToHLS(inputPath, outputDir) {
     return new Promise((resolve, reject) => {
@@ -27,7 +26,6 @@ function convertToHLS(inputPath, outputDir) {
 
 const createAudio = async (data,userId) => {
     const { title, trackUrl, description, imgUrl } = data;
-
     const newTrack = new Track({
         title,
         trackUrl,
@@ -38,7 +36,7 @@ const createAudio = async (data,userId) => {
 
     try {
         const savedTrack = await newTrack.save();
-        return savedTrack._id; 
+        return savedTrack; 
     } catch (error) {
         throw new Error('Error creating audio: ' + error.message);
     }
@@ -52,5 +50,10 @@ const getAudioAll = async () => {
         throw new Error('Error fetching audio tracks: ' + error.message);
     }
 }
+const audioService = {
+    convertToHLS,
+    createAudio,
+    getAudioAll,
+};
 
-module.exports = { convertToHLS, createAudio, getAudioAll };
+export default audioService;

@@ -1,8 +1,12 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const audioController = require('../../controllers/audio.Controller');
-const authMiddleware = require('../../middlewares/auth.middleware');
+import express from 'express';
+import multer from 'multer';
+import path  from 'path';
+import {
+    uploadAudio,
+    createAudio,
+    getAudioAll
+} from '../../controllers/audio.Controller.js';
+import authMiddleware from '../../middlewares/auth.middleware.js';
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -11,10 +15,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-router.get('/all', audioController.getAudioAll);
+router.get('/all', getAudioAll);
+;
+router.post('/upload', authMiddleware, upload.single('audio'), uploadAudio);
+router.post('/create', authMiddleware, createAudio);
 
-router.use(authMiddleware());
-router.post('/upload', upload.single('audio'), audioController.uploadAudio);
-router.post('/create',audioController.createAudio);
 
-module.exports = router;
+export default router;
