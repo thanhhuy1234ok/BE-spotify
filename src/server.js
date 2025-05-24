@@ -1,10 +1,13 @@
-const express = require('express');
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import router from './router/index.js';
+
+dotenv.config();
+
 const app = express();
-const mongoose = require('mongoose');
-require('dotenv').config();
-const cors = require('cors');
 const port = process.env.PORT || 8000;
-const router = require('./router/index.js');
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myapp';
 
 const connectDB = async () => {
@@ -30,5 +33,4 @@ app.use('/api', router);
 
 app.listen(port, () => {
     console.log(`Server started on port http://localhost:${port}`);
-}
-);
+});
