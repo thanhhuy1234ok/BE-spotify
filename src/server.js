@@ -25,6 +25,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/hls', express.static('hls'));
 
 app.use('/api', router);
 
