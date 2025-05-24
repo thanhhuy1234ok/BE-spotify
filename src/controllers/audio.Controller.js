@@ -14,6 +14,29 @@ const uploadAudio = async (req, res) => {
     }
 }
 
+const createAudio = async (req, res) => {
+    try {
+        const data = req.body;
+        const userId = req.user.id;
+        const audioId = await AudioService.createAudio(data, userId);
+  
+        res.status(201).json({ message: 'Audio created successfully', data: { audioId } });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+const getAudioAll = async (req, res) => {
+    try {
+        const tracks = await AudioService.getAudioAll();
+        res.status(200).json(tracks);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
-    uploadAudio
+    uploadAudio,
+    createAudio,
+    getAudioAll
 };
