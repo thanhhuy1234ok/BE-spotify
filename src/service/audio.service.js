@@ -1,10 +1,9 @@
-const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
-const ffmpeg = require('fluent-ffmpeg');
-
+import ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
+import ffmpeg from 'fluent-ffmpeg';
+import fs from 'fs';
+import mkdirp from 'mkdirp';
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
-const fs = require('fs');
-const mkdirp = require('mkdirp');
 
 function convertToHLS(inputPath, outputDir) {
     return new Promise((resolve, reject) => {
@@ -25,4 +24,4 @@ function convertToHLS(inputPath, outputDir) {
     });
 }
 
-module.exports = { convertToHLS };
+export default { convertToHLS };

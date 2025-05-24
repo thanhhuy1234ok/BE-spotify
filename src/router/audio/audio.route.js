@@ -1,15 +1,16 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const audioController = require('../../controllers/audio.Controller');
+import express from "express";
+import multer from "multer";
+import path from "path";
+import { uploadAudio } from "../../controllers/audio.controller.js";
 
 const router = express.Router();
 const storage = multer.diskStorage({
-    destination: 'uploads/',
-    filename: (_, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+  destination: "uploads/",
+  filename: (_, file, cb) =>
+    cb(null, Date.now() + path.extname(file.originalname)),
 });
 const upload = multer({ storage });
 
-router.post('/upload', upload.single('audio'), audioController.uploadAudio);
+router.post("/upload", upload.single("audio"), uploadAudio);
 
-module.exports = router;
+export default router;
