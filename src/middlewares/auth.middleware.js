@@ -1,28 +1,39 @@
-const { verifyAccessToken } = require('../utils/jwt');
-const { sendError } = require('../utils/response'); 
-const StatusCodes = require('../constants/statusCodes');
+// src/middleware/authMiddleware.js
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-const authMiddleware = async (req, res, next) => {
-    try {
-        const authHeader = req.headers['authorization'];
-        const token = authHeader && authHeader.split(' ')[1];
-
-        if (!token) {
-            return sendError(res, StatusCodes.UNAUTHORIZED, 'Không có access token');
-        }
-
-        const userData = await verifyAccessToken(token);
-
-        if (!userData) {
-            return sendError(res, StatusCodes.UNAUTHORIZED, 'Access token không hợp lệ');
-        }
-
-        req.user = userData;
-        next();
-    } catch (error) {
-        console.error('AuthMiddleware Error:', error.message);
-        return sendError(res, StatusCodes.UNAUTHORIZED, 'Access token không hợp lệ');
+const authMiddleware = (req, res, next) => {
+  try {
+    const authHeader = req.headers['authorization']; // Lấy header Authorization
+    if (!authHeader) {
+      return res.status(401).json({ error: 'Không có access token' });
     }
+
+    // Authorization header thường có dạng: "Bearer token"
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ error: 'Token không hợp lệ' });
+    }
+
+    const secretKey = process.env.JWT_SECRET;
+    if (!secretKey) {
+      throw new Error('JWT_SECRET chưa được cấu hình trong .env');
+    }
+
+    // Verify token
+    jwt.verify(token, secretKey, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ error: 'Access token không hợp lệ hoặc đã hết hạn' });
+      }
+
+      // Lưu dữ liệu user vào req để controller có thể dùng
+      req.user = decoded;
+      next();
+    });
+  } catch (error) {
+    console.error('Auth middleware error:', error.message);
+    res.status(500).json({ error: 'Lỗi server' });
+  }
 };
 
 module.exports = authMiddleware;
