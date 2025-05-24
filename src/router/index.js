@@ -1,7 +1,11 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
+const { register, login } = require('../controllers/auth.controller');
 
-router.get('/', (req, res) => {
-    res.send('Hello from the router');
-}); 
+// Đăng ký
+router.post('/register', register);
+
+// Đăng nhập
+router.post('/login', login);
 
 module.exports = router;
