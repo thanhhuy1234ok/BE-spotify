@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const audioController = require('../../controller/audioController');
+const audioController = require('../../controllers/audio.Controller');
 
 const router = express.Router();
 const storage = multer.diskStorage({
