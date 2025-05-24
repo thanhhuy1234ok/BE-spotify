@@ -1,6 +1,7 @@
 // src/middleware/authMiddleware.js
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const authMiddleware = (req, res, next) => {
   try {
@@ -32,8 +33,8 @@ const authMiddleware = (req, res, next) => {
     });
   } catch (error) {
     console.error('Auth middleware error:', error.message);
-    res.status(500).json({ error: 'Lỗi server' });
+    return res.status(500).json({ error: 'Lỗi server' });
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

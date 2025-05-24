@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { Schema } = moogose;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 const trackSchema = new Schema({
     title: {
         type: String,
@@ -30,4 +30,4 @@ const trackSchema = new Schema({
         default: Date.now
     }
 });
-module.exports = mongoose.model('Track', trackSchema);
+export default mongoose.model('Track', trackSchema);

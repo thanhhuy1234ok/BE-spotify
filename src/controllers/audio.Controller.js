@@ -1,6 +1,6 @@
 import AudioService from "../service/audio.service.js";
 
-const uploadAudio = async (req, res) => {
+export const uploadAudio = async (req, res) => {
   try {
     const inputPath = req.file.path;
     const songId = Date.now().toString();
@@ -17,4 +17,28 @@ const uploadAudio = async (req, res) => {
   }
 };
 
-export { uploadAudio };
+export const createAudio = async (req, res) => {
+  try {
+    const data = req.body;
+    const userId = req.user.userId;
+
+    const audioId = await AudioService.createAudio(data, userId);
+
+    res
+      .status(201)
+      .json({ message: "Audio created successfully", data: { audioId } });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getAudioAll = async (req, res) => {
+  try {
+    const tracks = await AudioService.getAudioAll();
+    res
+      .status(200)
+      .json({ message: "Audio get all successfully", data: tracks });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
