@@ -1,25 +1,21 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
-const userSchema = new Schema({
-    name: {
+const { Schema } = moogose;
+const trackSchema = new Schema({
+    title: {
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
+    trackUrl: {
         type: String,
         required: true
     },
-    role: {
+    description: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
     },
-
+    imgUrl:{
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -28,7 +24,5 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     }
-
-})
-
-export default mongoose.model('User', userSchema);
+});
+module.exports = mongoose.model('Track', trackSchema);
